@@ -16,7 +16,7 @@ const config =  defineConfig({
   globalSetup: './globalSetup',
   globalTeardown: './globalTeardown',
   // grep: /@smoke/,
-  timeout: 360_000,
+  timeout: 70000,
   /* Run tests in files in parallel */
   fullyParallel: false,
   /* Fail the build on CI if you accidentally left test.only in the source code. */
@@ -29,12 +29,14 @@ const config =  defineConfig({
   reporter: [['html', {open: 'only-on-failure'}]],
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
+    headless: false,
     httpCredentials: {
       username: "guest",
       password: "welcome2qauto"
     },
+    screenshot: 'only-on-failure',
     /* Base URL to use in actions like `await page.goto('/')`. */
-    baseURL: 'http://127.0.0.1:3000',
+    baseURL: 'https://qauto.forstudy.space/',
     viewport: {
       width: 1200,
       height: 840
@@ -42,6 +44,9 @@ const config =  defineConfig({
 
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: 'on-first-retry',
+    launchOptions:{
+      slowMo: 1000
+    }
   },
 
   /* Configure projects for major browsers */
