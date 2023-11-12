@@ -2,7 +2,7 @@ import { faker } from "@faker-js/faker";
 import { expect, test } from "@playwright/test";
 
 test.describe("User registration", () => {
-    test("Create user", async ({ page }) => {
+    test("Create user @smoke", async ({ page }) => {
         const user = {
             firstName: faker.person.firstName(),
             lastName: faker.person.lastName(),
@@ -39,7 +39,7 @@ test.describe("User registration", () => {
     });
 });
 test.describe("User registration validation", () => {
-    test("Should display a validation message if the field length is longer than allowed", async ({page}) => {
+    test("Should display a validation message if the field length is longer than allowed @regression", async ({page}) => {
         const user = {
             firstName: "A".repeat(21),
             lastName: faker.person.lastName(),

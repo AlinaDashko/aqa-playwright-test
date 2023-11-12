@@ -25,7 +25,7 @@ test.describe("Test", ()=>{
     //
   })
 
-  test('has title 1 @smoke', async ({page}) => {
+  test('has title 1', async ({page}) => {
 
     await test.step("Navigate to playwright site", async ()=>{
       await page.goto('https://playwright.dev/');
