@@ -6,6 +6,7 @@ export class BasePage extends BaseComponent {
         const wrapper = container ?? page.locator('html')
         super(page, wrapper)
         this._url = url
+        this.activeHeaderItem = page.locator('a.btn.header-link.-active')
     }
 
     async navigate(){
