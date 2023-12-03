@@ -57,9 +57,13 @@ const config =  defineConfig({
     {
       name: 'chromium',
       use: { ...devices['Desktop Chrome'] },
-      dependencies: ['setup']
+      dependencies: ['setup'],
+      testIgnore: 'tests/api/**/*.spec.js',
     },
-
+    {
+      name: 'api',
+      testMatch: 'tests/api/**/*.spec.js',
+    },
     {
       name: 'firefox',
       use: { ...devices['Desktop Firefox'] },
