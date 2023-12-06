@@ -1,0 +1,37 @@
+import { test } from "../../../src/fixtures/userGaragePage.js"
+import { expect } from "@playwright/test";
+import { VALID_BRANDS_RESPONSE_BODY } from "../../../src/data/dict/brands.js";
+import { VALID_BRAND_MODELS } from "../../../src/data/dict/models.js";
+import { USERS } from "../../../src/data/dict/users.js";
+import { APIClient } from "../../../src/client/APIClient.js";
+
+test.describe("API PUT Tests", () => {
+    let client;
+    let carId;
+    let requestBody;
+
+    test.beforeAll(async () => {
+        client = await APIClient.authenticate(undefined, {
+            "email": USERS.ALASKA_YOUNG.email,
+            "password": USERS.ALASKA_YOUNG.password,
+            "remember": false
+        });
+
+        const newCar = await client.cars.createUserCar(requestBody)
+        carId = newCar.data.data.id
+
+    test("PUT /cars Should edit a new car", async ({})=>{
+        const brandIdEdit = VALID_BRANDS_RESPONSE_BODY.data[1].id
+        const modelIdEdit = VALID_BRAND_MODELS[brandId].data[1].id;
+        const requestBodyEdit = {
+            "carBrandId": brandIdEdit,
+            "carModelId": modelIdEdit,
+            "mileage": 125
+        }
+        const response = await client.cars.editUserCar(carId,requestBodyEdit)
+        expect(response.status, "Status code should be 201").toEqual(201)
+        expect(response.data.status, "Success response should be returned").toBe("ok")
+        expect(response.data.data, "Should edit a new car").toMatchObject(requestBody)
+    });
+});
+});
