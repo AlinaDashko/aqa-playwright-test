@@ -4,11 +4,10 @@ import { VALID_BRANDS_RESPONSE_BODY } from "../../../src/data/dict/brands.js";
 import { VALID_BRAND_MODELS } from "../../../src/data/dict/models.js";
 import { USERS } from "../../../src/data/dict/users.js";
 import { APIClient } from "../../../src/client/APIClient.js";
+import { CreateCarModel} from "../../../src/models/cars/postCarsModel.js";
 
 test.describe("API POST Tests", () => {
     let client;
-    let carId;
-    let requestBody;
 
     test.beforeAll(async () => {
         client = await APIClient.authenticate(undefined, {
@@ -17,19 +16,22 @@ test.describe("API POST Tests", () => {
             "remember": false
         });
 
-    test("POST /cars Should create a new car", async ({})=>{
-        const brandId = VALID_BRANDS_RESPONSE_BODY.data[1].id
-        const modelId = VALID_BRAND_MODELS[brandId].data[1].id;
-        const requestBody = {
-            "carBrandId": brandId,
-            "carModelId": modelId,
-            "mileage": 122
-        }
-        const response = await client.cars.createUserCar(requestBody)
-        carId = response.data.data.id
-        expect(response.status, "Status code should be 201").toEqual(201)
-        expect(response.data.status, "Success response should be returned").toBe("ok")
-        expect(response.data.data, "Car should be created with data from request").toMatchObject(requestBody)
+        test("POST /cars Should create a new car", async ({}) => {
+            const carModel = new CreateCarModel({carBrandId: 5, carModelId: 5, mileage: 122})
+            const brand = VALID_BRANDS_RESPONSE_BODY.data.find((brand) => brand.id === carModel.carBrandId)
+            const model = VALID_BRAND_MODELS[brand.id].data.find((model) => model.id === carModel.carModelId)
+            const response = await client.cars.createUserCar(carModel)
+            const expectedBody = {
+                ...carModel,
+                initialMileage: carModel.mileage,
+                id: expect.any(Number),
+                carCreatedAt: expect.any(String),
+                updatedMileageAt: expect.any(String),
+                brand: brand.title,
+                model: model.title,
+                logo: brand.logoFilename
+            }
+            expect(response.data.data, "Should create a new car").toEqual(expectedBody)
+        });
     });
-});
 });
