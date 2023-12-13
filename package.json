@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "npx playwright test --project=chromium",
+    "test": "npx playwright test --reporter=list",
     "test:api": "npx playwright test --project=api",
     "test:smoke": "npx playwright test -c playwright.config.smoke.js --project=chromium",
     "test:regression": "npx playwright test -c playwright.config.regression.js --project=chromium",
